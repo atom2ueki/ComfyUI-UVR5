@@ -263,9 +263,9 @@ class UVR5:
             need_reformat = 1
             
         if need_reformat == 1:
-            tmp_path = os.path.join(
+            tmp_path = "%s/%s.reformatted.wav" % (
                 input_path,
-                f"{os.path.basename(inp_path)}.reformatted.{format0}"
+                os.path.basename(inp_path),
             )
             os.system(
                 f'ffmpeg -i "{inp_path}" -vn -acodec pcm_s16le -ac 2 -ar 44100 "{tmp_path}" -y'
@@ -290,6 +290,11 @@ class UVR5:
         print("clean_empty_cache")
         if torch.cuda.is_available():
             torch.cuda.empty_cache()
+
+        # Print the generated paths for debugging
+        print(f"Generated vocal audio path: {vocal_AUDIO}")
+        print(f"Generated BGM audio path: {bgm_AUDIO}")
+
         return vocal_AUDIO,bgm_AUDIO
     """
         The node will always be re executed if any of the inputs change but
