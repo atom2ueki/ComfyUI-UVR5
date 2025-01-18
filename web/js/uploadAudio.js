@@ -195,7 +195,7 @@ ComfyWidgets.AUDIOPLOAD = audioUpload;
 app.registerExtension({
 	name: "UVR5.UploadAudio",
 	async beforeRegisterNodeDef(nodeType, nodeData, app) {
-		if (nodeData?.name == "LoadAudioPath") {
+		if (nodeData?.name == "UploadAudio") {
 			nodeData.input.required.upload = ["AUDIOPLOAD"];
 		}
 	},

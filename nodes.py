@@ -50,7 +50,7 @@ class PreViewAudio:
         return m.digest().hex()
 
 
-class LoadAudioPath:
+class UploadAudio:
     @classmethod
     def INPUT_TYPES(s):
         input_dir = input_path
@@ -77,6 +77,51 @@ class LoadAudioPath:
             m.update(f.read())
         return m.digest().hex()
 
+class LoadAudioFromPath:
+    """
+    Node to load audio files from a predefined directory: /app/ComfyUI/audios.
+    """
+    @classmethod
+    def INPUT_TYPES(s):
+        # Define the input fields for the node
+        audio_dir = "/app/ComfyUI/audios"
+        files = [
+            f for f in os.listdir(audio_dir)
+            if os.path.isfile(os.path.join(audio_dir, f)) and f.split('.')[-1].lower() in ["wav", "mp3", "flac", "m4a"]
+        ]
+        return {
+            "required": {
+                "audio": (sorted(files),)
+            }
+        }
+
+    CATEGORY = "AIFSH_UVR5"  # Category under which the node appears in the UI
+
+    RETURN_TYPES = ("AUDIOPATH",)  # Output type
+    FUNCTION = "load_audio"       # Entry-point method
+
+    def load_audio(self, audio):
+        """
+        Load the selected audio file and return its path.
+        """
+        audio_dir = "/app/ComfyUI/audios"
+        audio_path = os.path.join(audio_dir, audio)
+        if not os.path.exists(audio_path):
+            raise FileNotFoundError(f"Audio file not found: {audio_path}")
+        print(f"Loaded audio file: {audio_path}")
+        return (audio_path,)
+
+    @classmethod
+    def IS_CHANGED(s, audio):
+        """
+        Check if the file has changed by computing its SHA-256 hash.
+        """
+        audio_dir = "/app/ComfyUI/audios"
+        audio_path = os.path.join(audio_dir, audio)
+        m = hashlib.sha256()
+        with open(audio_path, 'rb') as f:
+            m.update(f.read())
+        return m.digest().hex()
 
 class UVR5:
     """
