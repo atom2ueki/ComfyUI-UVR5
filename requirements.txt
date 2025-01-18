@@ -1,7 +1,6 @@
 ffmpeg-python
 librosa
 onnxruntime-gpu
-torch==2.5.0
+torch==2.5.0+cu124
 torchvision==0.20.0 
-torchaudio==2.5.0 
-pytorch-cuda==12.4
+torchaudio==2.5.0
