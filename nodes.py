@@ -263,9 +263,9 @@ class UVR5:
             need_reformat = 1
             
         if need_reformat == 1:
-            tmp_path = "%s/%s.reformatted.wav" % (
+            tmp_path = os.path.join(
                 input_path,
-                os.path.basename(inp_path),
+                f"{os.path.basename(inp_path)}.reformatted.{format0}"
             )
             os.system(
                 f'ffmpeg -i "{inp_path}" -vn -acodec pcm_s16le -ac 2 -ar 44100 "{tmp_path}" -y'
